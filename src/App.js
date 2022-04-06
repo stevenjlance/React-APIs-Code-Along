@@ -1,16 +1,17 @@
-import React, {Component} from 'react';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {};
   }
 
   render() {
     return (
       <div className="App">
-        <h1>Hello React App</h1>
+        <h1>Getting API Data!</h1>
+        <section className="list">{/* PUT API RESPONSE DATA HERE */}</section>
       </div>
     );
   }
