@@ -1,14 +1,19 @@
 # API CODE ALONG
 
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app), and then modified to serve as a nearly-blank slate for students taking the CS + The City course in React.js.
+Today we will be learning how to create API calls in React in order to get data from NYC Open Data into our programs.
 
-<a id="gcs"></a>
+## Creating API Calls in React
 
-## Google Cloud Shell Setup
+#### Step 1: Create a Developer Account
 
-#### Step 1: Open Cloud Shell
+In order to access an API, we often need to create an account with the website and get an app token.
 
-Let's start by opening up Google Cloud Shell. You'll want to use the route that lets you and your students access Cloud Shell directly: bit.ly/cloudshell. Note that your Cloud Shell environment is tied to your Gmail, so you and your students will need to be logged into a Gmail account to use it.
+On NYC Open Data:
+
+1. Sign up for an [Open Data Account](https://opendata.cityofnewyork.us/)
+2. If you're not directed to the Developer Settings, click "edit profile" and then click "Developer Settings". [This link may also get you there](https://data.cityofnewyork.us/profile/edit/developer_settings).
+3. Tap the "Create New App Token" button, fill in the required information about the app/dataset you're using, and then tap "Save".
+4. You'll see your new App Token in the list below the button
 
 #### Step 2: Make a Copy of the Template
 
