@@ -8,108 +8,71 @@ Today we will be learning how to create API calls in React in order to get data 
 
 In order to access an API, we often need to create an account with the website and get an app token.
 
-On NYC Open Data:
+**On NYC Open Data**:
 
 1. Sign up for an [Open Data Account](https://opendata.cityofnewyork.us/)
 2. If you're not directed to the Developer Settings, click "edit profile" and then click "Developer Settings". [This link may also get you there](https://data.cityofnewyork.us/profile/edit/developer_settings).
 3. Tap the "Create New App Token" button, fill in the required information about the app/dataset you're using, and then tap "Save".
 4. You'll see your new App Token in the list below the button
 
-#### Step 2: Make a Copy of the Template
+#### Step 2: Getting an Endpoint
 
-Next, click "use this template" to get a copy of a react template. Note that you'll need to be logged in to GitHub to make that happen.
+**GOAL**: We are going to build a website that gives information about the status of Taxi Drivers application for licenses 🚕
 
-You can use any name you want for this project, but a good one for your students to use might be `my-first-react-project` - then students will know they've arrived at their own copy of this template when the title of the project is no longer `upperlinecode/react-project-template-for-google-cloudshell` but has instead been changed to `their-username/my-first-react-project`.
+1. [Open the dataset on NYC Open Data](https://data.cityofnewyork.us/Transportation/TLC-New-Driver-Application-Status/dpec-ucu7)
+2. Click API and copy the URL. Type a `?` at the end of the URL
+3. Append the variable `$$app_token` to the endpoint along with our App Token in order to make the request. It might look something like:
 
-#### Step 3: Clone their Copy into Cloud Shell
+`https://data.cityofnewyork.us/resource/dpec-ucu7.json?$$app_token=2y6eroqasasdasd5UDtsqbdRlo8SOA9rt`
 
-It's important to make sure that you're all in the same part of your GCS environment, so you can have students type `cd ~` (or even just `cd`, though that's specific to Cloud Shell) to return to the main directory of their Cloud Shell environments.
+4. Open in a new tab to make sure it works!
+5. After your app_token type a &
+6. You can then add the key and the value you want to filter for like:
+   https://data.cityofnewyork.us/resource/dpec-ucu7.json?$$app_token=2y6eroq5UDtsqbdRlo8SOA9rt&status=Incomplete
 
-Have each student find the URL for their project. It will be in a small window that appears when you press the green "clone" button. With that URL in their clipboard, they will want to clone it down:
+7. You can chain as many &’s together as you want to filter for!
 
-```bash
-git clone SOME-URL-HERE
-```
+#### Step 3: Filtering Our Data
 
-The phrase `SOME-URL-HERE` will obviously be replaced with the URL for each student's project, so it might look something like `git clone https://github.com/sara123/my-first-react-project`.
+Suppose we only want data for applications that have a status of Incomplete
 
-#### Step 4: Install the App
+1. After your app_token type a `&`
+2. You can then add the key and the value you want to filter for like:
 
-You have to be IN the directory where the app is in order to run the install command. If the students have used `my-first-react-project` as their project name, the command will be this:
+`…REST_OF_API_REQUEST_?$$app_token=2y6eroq5UDtsqbdRlo8SOA9rt&status=Incomplete`
 
-```bash
-cd my-first-react-project
-```
+3. You can chain as many `&`’s together as you want to filter for!
 
-You'll know this has worked if you can run `pwd` (print working directory) and see that the current working directory matches your project name.
+#### Step 4: Getting Data Into Our app
 
-Then, you can install the app using the following command:
-
-```bash
-npm install
-```
-
-This will trigger the installation of all the files needed to run a React App - it usually takes about 1-2 minutes.
-
-NOTE: If your install mentions vulnerabilities, you can usually ignore them (even if they are described as "high"). If we need to troubleshoot them, we'll do it in step 5 below.
-
-#### Step 5: Run the App
-
-Finally, you need to host your app by running the following command:
-
-```bash
-npm start
-```
-
-This should take another minute to start up, but you'll know it's ready when you see a message detailing which port the app is hosted on. From here you can preview the app at that port using Cloud Shell's preview button. You should see some placeholder code when the app preview starts.
-
-NOTE: If your app failed to start up for some reason, and there were vulnerabilities listed in step 4, you can try updating the installation file with the command `npm audit fix` - if the app started up in spite of its vulnerabilities, ignore them for now.
-
-#### Step 6: Mess with the App
-
-Open directory that contains your React project in your code editor. Find the App.js file in the "src" directory. Delete the code inside of the div with the class name "App."
-
-Here's what that code looks like when you first open it:
+API calls are typically done in the `componentDidMount` method of a component because the timing of the API request should be so the response of the request can be displayed in the component on the page:
 
 ```javascript
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+componentDidMount = () => {
+  fetch(“YOUR API URL”)
+  // convert response to JSON
+  .then(response => response.json())
+  .then(data => {
+  // code to execute once data is defined
+  // Often you just want to save in state
+     this.setState({ data: data });
+  })
+  .catch(e => {
+    alert(e);
+  })
 }
-
-export default App;
 ```
 
-Try adding some HTML to get "Hello World" to appear on the web page instead! Here's what the `App()` function might look like after you make those changes:
+We can then render this content on the page, put it in a Victory component, run calculations, and whatever else you want to do with your data!
+
+Let's say I just wanted to render all of the applications on the page. We can map over the data insider our render.
 
 ```javascript
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Hello World!</h1>
-      </header>
-    </div>
-  );
+{
+  this.state.data.map((application) => (
+    <li>
+      {application.app_no}: {application.other_requirements}
+    </li>
+  ));
 }
 ```
